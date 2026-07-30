@@ -1,6 +1,11 @@
 import { ALL_FIELDS } from '@/data/intakeSteps';
+import { buildEvidencePanels } from '@/engine/buildEvidencePanels';
+import { buildFinalRecommendation } from '@/engine/buildFinalRecommendation';
+import { buildMvp } from '@/engine/buildMvp';
 import { buildRisks, highRisks } from '@/engine/buildRisks';
+import { buildRoadmap } from '@/engine/buildRoadmap';
 import { buildSourceOfTruth } from '@/engine/buildSourceOfTruth';
+import { buildRoutePlan } from '@/engine/recommendPaths';
 import { checkExistingSolution } from '@/engine/existingSolution';
 import { determineConfidence } from '@/engine/determineConfidence';
 import { determineMaturity } from '@/engine/determineMaturity';
@@ -60,13 +65,61 @@ export function generateAssessment(answers: AnswerMap): Assessment {
     timeline,
   });
 
+  const routePlan = buildRoutePlan(n, routes, recommended);
+  const mvp = buildMvp(n, recommended, safeguards, timeline);
+  const roadmap = buildRoadmap(n, recommended, routePlan, timeline);
+  const technicalStatus = overallTechnicalStatus(routes);
+
+  const evidencePanels = buildEvidencePanels({
+    n,
+    feasibility,
+    route: recommended,
+    cost,
+    timeline,
+    confidence,
+    assessment: {
+      suitability: headlineBuilderFit.suitability,
+      technicalStatus,
+      existingSolution: existing,
+      maturity,
+      highRisks: highRisks(risks),
+    },
+  });
+
+  const finalRecommendation = buildFinalRecommendation({
+    n,
+    verdict,
+    feasibility,
+    builderFitScore: headlineBuilderFit.score,
+    confidence,
+    plan: routePlan,
+    routes,
+    recommended,
+    maturity,
+    cost,
+    mvp,
+  });
+
   const alternativeRouteIds = routes
     .filter((route) => route.eligibleForRecommendation && route.routeId !== recommended?.routeId)
     .sort((a, b) => b.fitScore - a.fitScore)
     .slice(0, 3)
     .map((route) => route.routeId);
 
+  const titleAnswer = answers['workingTitle'];
+  const projectName =
+    titleAnswer && titleAnswer.status === 'answered' && titleAnswer.text.trim().length > 0
+      ? titleAnswer.text.trim()
+      : 'Untitled project (no working title given)';
+
   return {
+    projectName,
+    projectNameProvenance:
+      titleAnswer && titleAnswer.status === 'answered'
+        ? titleAnswer.source === 'demo'
+          ? 'demonstration-data'
+          : 'from-your-answer'
+        : 'unknown',
     projectFeasibility: feasibility,
     builderFit: headlineBuilderFit,
     builderFitByRoute,
@@ -75,7 +128,7 @@ export function generateAssessment(answers: AnswerMap): Assessment {
     alternativeRouteIds,
     excludedRouteIds: routes.filter((route) => route.excluded !== null).map((route) => route.routeId),
     existingSolution: existing,
-    technicalStatus: overallTechnicalStatus(routes),
+    technicalStatus,
     suitability: headlineBuilderFit.suitability,
     maturity,
     risks,
@@ -86,6 +139,11 @@ export function generateAssessment(answers: AnswerMap): Assessment {
     sourceOfTruth,
     safeguards,
     verdict,
+    routePlan,
+    mvp,
+    roadmap,
+    evidencePanels,
+    finalRecommendation,
     evidence: collectEvidence(n, answers),
     assumptions: collectAssumptions(n, recommended !== null),
     unknowns: n.unknownFieldLabels,

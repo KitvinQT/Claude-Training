@@ -143,6 +143,14 @@ svg {
   margin-bottom: var(--sp-3);
 }
 
+.stack {
+  min-width: 0;
+}
+
+.stack > * {
+  min-width: 0;
+}
+
 .stack > * + * {
   margin-top: var(--sp-4);
 }

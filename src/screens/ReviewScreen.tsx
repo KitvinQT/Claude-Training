@@ -81,20 +81,37 @@ export function ReviewScreen() {
           Next step
         </h2>
         <p id="generate-help">
-          The assessment engine is not built yet. Nothing on this screen has been
-          scored, and no feasibility conclusion exists at this stage of the
-          prototype.
+          The assessment applies a published set of rules to the answers above,
+          entirely inside this browser. Nothing is sent anywhere, no vendor or price
+          is looked up, and the result requires human review.
         </p>
+        {state.assessment !== null && state.assessmentStale && (
+          <p className="review-actions__note">
+            Answers have changed since the last assessment. Regenerate to bring it up
+            to date.
+          </p>
+        )}
         <div className="review-actions">
           <button
             aria-describedby="generate-help"
             className="button button--primary button--large"
-            disabled
+            onClick={() => {
+              announce('Generating the assessment.');
+              dispatch({ type: 'start-generating' });
+            }}
             type="button"
           >
-            Generate assessment
+            {state.assessment === null ? 'Generate assessment' : 'Regenerate assessment'}
           </button>
-          <p className="review-actions__note">Assessment engine added in Phase 2.</p>
+          {state.assessment !== null && (
+            <button
+              className="button button--secondary"
+              onClick={() => dispatch({ type: 'view-report' })}
+              type="button"
+            >
+              Back to the assessment
+            </button>
+          )}
         </div>
       </section>
 

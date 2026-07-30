@@ -1,5 +1,6 @@
 import { getStep, INTAKE_STEPS, TOTAL_STEPS } from '@/data/intakeSteps';
 import { scenarioToAnswers, type DemoScenario } from '@/data/demoScenarios';
+import type { Assessment } from '@/engine/types';
 import type { AnswerMap, FieldAnswer, IntakeState } from '@/types/intake';
 import { EMPTY_ANSWER } from '@/types/intake';
 import { allStepsComplete, answerFor, isStepComplete } from '@/utils/answers';
@@ -12,6 +13,8 @@ export const initialIntakeState: IntakeState = {
   reviewUnlocked: false,
   returnToReview: false,
   scenarioName: null,
+  assessment: null,
+  assessmentStale: false,
 };
 
 export type IntakeAction =
@@ -26,6 +29,9 @@ export type IntakeAction =
   | { type: 'go-to-step'; index: number }
   | { type: 'edit-step'; index: number }
   | { type: 'go-to-review' }
+  | { type: 'start-generating' }
+  | { type: 'assessment-ready'; assessment: Assessment }
+  | { type: 'view-report' }
   | { type: 'start-over' };
 
 /**
@@ -53,6 +59,8 @@ export function intakeReducer(state: IntakeState, action: IntakeAction): IntakeS
         reviewUnlocked: allStepsComplete(answers),
         returnToReview: false,
         scenarioName: action.scenario.name,
+        assessment: null,
+        assessmentStale: false,
       };
     }
 
@@ -157,6 +165,26 @@ export function intakeReducer(state: IntakeState, action: IntakeAction): IntakeS
       return { ...state, screen: 'review', reviewUnlocked: true, returnToReview: false };
     }
 
+    case 'start-generating': {
+      // The engine is only run once every step has been addressed.
+      if (!allStepsComplete(state.answers)) {
+        return state;
+      }
+      return { ...state, screen: 'generating' };
+    }
+
+    case 'view-report':
+      // Returns to an assessment already held in memory, without recomputing it.
+      return state.assessment === null ? state : { ...state, screen: 'report' };
+
+    case 'assessment-ready':
+      return {
+        ...state,
+        screen: 'report',
+        assessment: action.assessment,
+        assessmentStale: false,
+      };
+
     case 'start-over':
       return initialIntakeState;
   }
@@ -168,7 +196,9 @@ function withAnswer(
   answer: FieldAnswer,
 ): IntakeState {
   const answers: AnswerMap = { ...state.answers, [fieldId]: answer };
-  return { ...state, answers };
+  // Any answer change makes an existing assessment out of date. The assessment is
+  // kept so the user can still read it, but the interface says it is stale.
+  return { ...state, answers, assessmentStale: state.assessment !== null };
 }
 
 /** Completed or current steps are reachable; future steps are not. */

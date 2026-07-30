@@ -1,3 +1,4 @@
+import type { Assessment } from '@/engine/types';
 import type { ProvenanceLabel } from '@/types/labels';
 
 /** How a field is answered. */
@@ -71,7 +72,7 @@ export function provenanceOf(answer: FieldAnswer): ProvenanceLabel {
   return 'from-your-answer';
 }
 
-export type Screen = 'welcome' | 'intake' | 'review';
+export type Screen = 'welcome' | 'intake' | 'review' | 'generating' | 'report';
 
 export interface IntakeState {
   readonly screen: Screen;
@@ -85,4 +86,8 @@ export interface IntakeState {
   /** Set when a step was opened via "Edit" from the Review screen. */
   readonly returnToReview: boolean;
   readonly scenarioName: string | null;
+  /** Held in memory only, like everything else. Lost on refresh by design. */
+  readonly assessment: Assessment | null;
+  /** True when answers changed after an assessment was produced. */
+  readonly assessmentStale: boolean;
 }

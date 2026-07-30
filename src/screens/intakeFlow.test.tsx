@@ -348,15 +348,15 @@ describe('review screen', () => {
     expect(screen.getByText(/not/i, { selector: 'strong' })).toBeInTheDocument();
   });
 
-  it('keeps Generate assessment disabled with a Phase 2 explanation', async () => {
+  it('offers an enabled Generate assessment action that explains what it does', async () => {
     const user = userEvent.setup();
     render(<App />);
     await walkDemoToReview(user);
 
     const generate = screen.getByRole('button', { name: /generate assessment/i });
-    expect(generate).toBeDisabled();
-    expect(screen.getByText('Assessment engine added in Phase 2.')).toBeInTheDocument();
-    expect(generate).toHaveAccessibleDescription(/assessment engine is not built yet/i);
+    expect(generate).toBeEnabled();
+    expect(generate).toHaveAccessibleDescription(/entirely inside this browser/i);
+    expect(generate).toHaveAccessibleDescription(/requires human review/i);
   });
 
   it('edits a section and returns to the review with the new value', async () => {

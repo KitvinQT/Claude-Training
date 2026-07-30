@@ -173,6 +173,31 @@ prototype with zero persistence and zero authentication. Tests assert that no
 Claude-branded route wins the simple-tracker, CRM, workflow, or restricted-environment
 scenarios, including when both are listed as preferred.
 
+## Best technical route, practical path, and alternative
+
+Three route selections are made, for three different questions.
+
+**Best technical route** — ranked by a technical-satisfaction score only:
+capability coverage (blocking gap −50, limiting gap −12) and maturity headroom
+(−15 per level short, +2 for headroom). It ignores Builder Fit, cost, and time
+entirely. Ties break by *lower ownership burden*, then lower effort: satisfying a
+requirement with a platform is not technically worse than satisfying it by hand.
+"Requires verification" is deliberately **not** penalised here — it means a
+product detail must be checked, and penalising it would quietly favour
+hand-built routes over platform ones.
+
+**Recommended practical path** — the route the fit scoring selected, which
+already accounts for cost, effort, maintenance capacity, and restrictions. It is
+described as "Recommended for you now" only when its suitability permits
+independent work. Where it does not, the wording becomes "Practical next step:
+secure developer support" (or professional implementation), an interim route is
+offered where one exists, and an immediate validation step is always given. Where
+the practical route differs from the technical route but both are doable, the
+report says so plainly rather than implying support is needed.
+
+**Best alternative** — the next strongest realistic option, preferring routes the
+builder can perform, with the sacrificed capability stated explicitly.
+
 ## Existing-solution check
 
 Runs before any build route is recommended. Recognises mature product categories

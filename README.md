@@ -121,6 +121,27 @@ Golden fixtures in `src/engine/__fixtures__/` pin seven fictional scenarios, and
 behaviour, risk completeness, provenance on every numeric result, and the absence
 of route bias.
 
+## Best technical route, practical path, and best alternative
+
+The report never lets "technically best" be read as "build this yourself now". It
+reports three things separately:
+
+- **Best technical route** — what would satisfy the requirements, chosen without
+  reference to the builder. It may need technical or professional support.
+- **Recommended practical path** — what this team should actually do next, given
+  Builder Fit, available support, restrictions, budget, security, and maintenance
+  capacity. A route is only ever labelled "Recommended for you now" when its
+  suitability allows independent work; where it does not, the wording becomes
+  *"Practical next step: secure developer support"* with an interim route.
+- **Best alternative** — the next strongest realistic option, with what it
+  sacrifices in capability, convenience, cost, or scalability.
+
+**Build method and final solution type are also separate.** Claude Code and
+AI-assisted coding are *methods*; a custom hosted web application is a
+*destination*. The report shows build method, final solution type, hosting
+target, and builder requirement as four distinct fields, with a note wherever the
+two concepts are commonly conflated.
+
 ## Value labelling
 
 Every figure and statement carries exactly one provenance label: **From your
@@ -173,7 +194,7 @@ any external use.
 | 0 | Repository scaffold, README, design tokens, application shell, prototype disclaimer, test configuration | Complete |
 | 1 | Welcome screen, grouped chat-style intake (9 steps), progress indicator, Review Project Details screen | Complete |
 | 2 | Deterministic scoring engine, separate Project Feasibility and Builder Fit scores, risk engine, route comparison logic, rubric documentation and tests | Complete |
-| 3 | Executive summary, scorecards, route comparison, risk register, cost and timeline, MVP, roadmap, evidence and assumptions, final recommendation | Not started |
+| 3 | Report interface: executive summary, scorecards, technical route vs practical path, route comparison, risk register, cost and timeline, maturity, source of truth, safeguards, MVP, roadmap, evidence, final recommendation | Complete |
 | 4 | Charts, table alternatives for every chart, responsive layout, accessibility, print view | Not started |
 | 5 | Fictional demo scenarios, end-to-end testing, static production build, demo script, screenshots, review summary | Not started |
 

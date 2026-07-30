@@ -693,6 +693,164 @@ export interface VerdictResult {
   readonly provenance: ProvenanceLabel;
 }
 
+/* ----------------- Technical route and practical path ----------------- */
+
+export interface TechnicalRouteCard {
+  readonly routeId: RouteId;
+  readonly name: string;
+  readonly whyItFits: readonly string[];
+  readonly requiredCapabilities: readonly string[];
+  readonly requiredSecurityInfrastructure: readonly string[];
+  readonly builderSupportNeeded: string;
+  readonly mainLimitation: string;
+  readonly buildMethod: string;
+  readonly finalSolutionType: string;
+  readonly hostingTarget: string;
+  readonly builderRequirement: string;
+  readonly overlapNote: string | null;
+  readonly provenance: ProvenanceLabel;
+}
+
+export type PracticalMode =
+  | 'build-now'
+  | 'build-with-guidance'
+  | 'build-with-technical-support'
+  | 'interim-then-support'
+  | 'secure-support-first'
+  | 'validate-first'
+  | 'no-action';
+
+export interface PracticalPathCard {
+  readonly routeId: RouteId | null;
+  readonly name: string;
+  /** Deliberately never "Recommended for you now" unless the builder can do it. */
+  readonly headline: string;
+  readonly mode: PracticalMode;
+  readonly whatToDoNow: readonly string[];
+  readonly canBuilderPerformIt: boolean;
+  readonly builderStatement: string;
+  readonly supportNeeded: string;
+  readonly interimRouteId: RouteId | null;
+  readonly interimRouteName: string | null;
+  readonly interimRationale: string | null;
+  readonly immediateValidationStep: string;
+  readonly provenance: ProvenanceLabel;
+}
+
+export interface AlternativeRouteCard {
+  readonly routeId: RouteId;
+  readonly name: string;
+  readonly whyEasier: readonly string[];
+  readonly capabilityLost: readonly string[];
+  readonly chooseWhen: string;
+  readonly provenance: ProvenanceLabel;
+}
+
+export interface RoutePlan {
+  readonly bestTechnical: TechnicalRouteCard;
+  readonly practical: PracticalPathCard;
+  readonly alternative: AlternativeRouteCard | null;
+  /** How the best technical route should be described, given builder fit. */
+  readonly technicalRouteLabel: string;
+  readonly separationStatement: string;
+}
+
+/* --------------------------------- MVP -------------------------------- */
+
+export interface MvpRecommendation {
+  readonly mainProblemSolved: string;
+  readonly includedFeatures: readonly string[];
+  readonly excludedFeatures: readonly string[];
+  readonly requiredTools: readonly string[];
+  readonly requiredUsers: readonly string[];
+  readonly humanReviewRequirements: readonly string[];
+  readonly testPeriod: string;
+  readonly successMeasures: readonly string[];
+  readonly failureCriteria: readonly string[];
+  readonly expansionConditions: readonly string[];
+  readonly remainManual: readonly string[];
+  readonly doNotAutomateYet: readonly string[];
+  readonly provenance: ProvenanceLabel;
+}
+
+/* ------------------------------- Roadmap ------------------------------ */
+
+export type RoadmapPhaseId = 'phase-0' | 'phase-1' | 'phase-2' | 'phase-3' | 'phase-4';
+
+export interface RoadmapPhase {
+  readonly id: RoadmapPhaseId;
+  readonly label: string;
+  readonly goal: string;
+  readonly mainWork: readonly string[];
+  readonly requiredOwner: string;
+  readonly mainRisk: string;
+  readonly exitCriteria: readonly string[];
+  readonly estimatedTime: string;
+  readonly maturityReached: MaturityLevel;
+  readonly achievableWithRecommendedRoute: boolean;
+  readonly provenance: ProvenanceLabel;
+}
+
+/* ------------------- Evidence, unknowns, verification ----------------- */
+
+export interface UnknownDetail {
+  readonly field: string;
+  readonly whyItMatters: string;
+  readonly affects: string;
+  readonly wouldImprove: string;
+}
+
+export interface VerificationNeed {
+  readonly category: string;
+  readonly detail: string;
+}
+
+export interface EvidencePanels {
+  readonly fromYourAnswers: readonly string[];
+  readonly derivedFindings: readonly string[];
+  readonly estimates: readonly string[];
+  readonly assumptions: readonly string[];
+  readonly demonstrationData: readonly string[];
+  readonly unknowns: readonly UnknownDetail[];
+  readonly verificationNeeds: readonly VerificationNeed[];
+  readonly notResearchedStatement: string;
+}
+
+/* -------------------------- Final recommendation ---------------------- */
+
+export interface InappropriateTool {
+  readonly name: string;
+  readonly reason: string;
+}
+
+export interface FinalRecommendation {
+  readonly verdict: Verdict;
+  readonly verdictLabel: string;
+  readonly mainReason: string;
+  readonly projectFeasibilityScore: number;
+  readonly builderFitScore: number;
+  readonly confidenceScore: number;
+  readonly confidenceBand: ConfidenceBand;
+  readonly bestTechnicalRouteName: string;
+  readonly practicalPathHeadline: string;
+  readonly alternativeRouteName: string | null;
+  readonly recommendedImplementationLevel: string;
+  readonly recommendedMaturity: MaturityLevel;
+  readonly requiredTools: readonly string[];
+  readonly optionalTools: readonly string[];
+  readonly inappropriateTools: readonly InappropriateTool[];
+  readonly hostingNeeded: string;
+  readonly databaseNeeded: string;
+  readonly authenticationNeeded: string;
+  readonly developerSupportNeeded: string;
+  readonly maintenanceDifficulty: string;
+  readonly whatNotToBuildYet: readonly string[];
+  readonly requiredConditions: readonly string[];
+  readonly conditionsThatCouldChange: readonly string[];
+  readonly immediateNextActions: readonly string[];
+  readonly provenance: ProvenanceLabel;
+}
+
 /* ------------------------------ Assessment ---------------------------- */
 
 export interface ProjectFeasibilityResult {
@@ -714,6 +872,9 @@ export interface ExistingSolutionCheck {
 }
 
 export interface Assessment {
+  /** Working title from intake, or a stated placeholder. Never invented. */
+  readonly projectName: string;
+  readonly projectNameProvenance: ProvenanceLabel;
   readonly projectFeasibility: ProjectFeasibilityResult;
   readonly builderFit: BuilderFitResult;
   readonly builderFitByRoute: readonly BuilderFitResult[];
@@ -733,6 +894,11 @@ export interface Assessment {
   readonly sourceOfTruth: SourceOfTruthResult;
   readonly safeguards: Safeguards;
   readonly verdict: VerdictResult;
+  readonly routePlan: RoutePlan;
+  readonly mvp: MvpRecommendation;
+  readonly roadmap: readonly RoadmapPhase[];
+  readonly evidencePanels: EvidencePanels;
+  readonly finalRecommendation: FinalRecommendation;
   readonly evidence: readonly string[];
   readonly assumptions: readonly string[];
   readonly unknowns: readonly string[];
