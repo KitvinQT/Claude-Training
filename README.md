@@ -30,20 +30,36 @@ MVP recommendation, a phased roadmap, and a final verdict.
 
 The prototype deliberately keeps these apart:
 
-1. **Project Feasibility Score** — problem and business value, scope realism, data
-   readiness, technical feasibility, operational feasibility, financial
-   feasibility, timeline feasibility, security and permissions, hosting and
-   sharing, maintenance and sustainability.
-2. **Builder Fit Score** — builder experience, coding/no-code experience, ability
-   to test, ability to troubleshoot, available technical support, available
-   developer support, learning burden, ability to deploy, ability to maintain.
+1. **Project Feasibility Score** — ten weighted dimensions: problem and business
+   value (12%), scope realism (10%), data readiness (10%), technical feasibility
+   (14%), operational feasibility (10%), financial practicality (10%), timeline
+   feasibility (8%), security and permissions (10%), hosting and sharing readiness
+   (8%), maintenance and sustainability (8%).
+2. **Builder Fit Score** — eleven abilities, scored **once per route**: general
+   technical experience, coding, no-code and spreadsheet, testing,
+   troubleshooting, deployment, security management, maintenance, available
+   guidance, available developer support, and the learning burden of that specific
+   route. The same builder can be a strong fit for a spreadsheet workflow and a
+   poor fit for a custom hosted application, so the engine keeps a separate result
+   for all eight routes and reports the recommended route's as the headline.
 
 Builder fit is reported alongside, never folded into, project feasibility. A
 project that is technically feasible stays technically feasible even when the
-current builder needs guidance or developer support. Suitability is expressed
-separately as one of: technically feasible · suitable for the current builder ·
-suitable with light guidance · requires technical support · requires developer
-support · requires professional implementation.
+current builder needs guidance or developer support — what changes is the
+suitability label, the route, the conditions, and the timeline.
+
+Two labels are always shown separately:
+
+- **Suitability** — suitable for the current builder · suitable with light
+  guidance · requires technical support · requires developer support · requires
+  professional implementation · unsuitable under current conditions
+- **Technical status** — technically feasible · technically feasible with
+  limitations · technically blocked · requires verification
+
+The visible verdict is always one of nine: Proceed · Proceed carefully ·
+Conditional Go · Simplify first · Revise before building · Delay · Use an existing
+solution · Do not build yet · No-Go. Ten critical gates run before any score band,
+so a high average can never override one unacceptable risk.
 
 ## How the intake works
 
@@ -68,6 +84,42 @@ ownership.
   text, not colour alone.
 - **Intake completeness is not a feasibility score.** It counts answered questions
   and says so on screen.
+
+## The assessment engine
+
+`src/engine/` holds the whole assessment as small, pure, deterministic modules —
+no React, no browser APIs, no storage, no network, no clock, no randomness. The
+same answers always produce an identical assessment.
+
+| Module | Responsibility |
+| --- | --- |
+| `normalizeAnswers` | Turns raw answers into typed signals, derived requirements, and conflicts |
+| `scoreProjectDimensions` | Project Feasibility across ten weighted dimensions |
+| `scoreBuilderByRoute` | Builder Fit, calculated once per route from eleven abilities |
+| `scoreRoutes` | Capability match, technical status, exclusions, fit, effort, conditions |
+| `existingSolution` | Whether an off-the-shelf product should be preferred to building |
+| `buildRisks` | All sixteen risk categories on the 1–5 scale |
+| `estimateCost` | Effort hours and cost categories — never currency |
+| `estimateTimeline` | Seven phases, each as an approved duration band |
+| `determineMaturity` | What the project requires and what each route supports |
+| `determineConfidence` | How much the assessment had to work with |
+| `buildSourceOfTruth` | Authoritative source, read-only data, approval owner |
+| `safeguards` | Human-decision rules and sensitive-data handling |
+| `determineVerdict` | Ten critical gates, then score bands, then vetoes |
+| `generateAssessment` | Orchestrates the above into one assessment |
+
+Two rules the engine enforces throughout:
+
+1. **Builder Fit never lowers Project Feasibility.** A feasible project stays
+   feasible when the builder needs help; what changes is the suitability label,
+   the route, the conditions, and the timeline.
+2. **No invented money.** Cost is effort hours plus categories, always alongside
+   *"Pricing must be verified before implementation."*
+
+Golden fixtures in `src/engine/__fixtures__/` pin seven fictional scenarios, and
+`src/engine/__tests__/` asserts determinism, score bounds, weight totals, gate
+behaviour, risk completeness, provenance on every numeric result, and the absence
+of route bias.
 
 ## Value labelling
 
@@ -120,7 +172,7 @@ any external use.
 | --- | --- | --- |
 | 0 | Repository scaffold, README, design tokens, application shell, prototype disclaimer, test configuration | Complete |
 | 1 | Welcome screen, grouped chat-style intake (9 steps), progress indicator, Review Project Details screen | Complete |
-| 2 | Deterministic scoring engine, separate Project Feasibility and Builder Fit scores, risk engine, route comparison logic, rubric documentation and tests | Not started |
+| 2 | Deterministic scoring engine, separate Project Feasibility and Builder Fit scores, risk engine, route comparison logic, rubric documentation and tests | Complete |
 | 3 | Executive summary, scorecards, route comparison, risk register, cost and timeline, MVP, roadmap, evidence and assumptions, final recommendation | Not started |
 | 4 | Charts, table alternatives for every chart, responsive layout, accessibility, print view | Not started |
 | 5 | Fictional demo scenarios, end-to-end testing, static production build, demo script, screenshots, review summary | Not started |
@@ -136,6 +188,8 @@ deployed at this stage.
 
 - `docs/PLAN.md` — approved implementation plan and revisions
 - `docs/LABELLING.md` — the seven provenance labels and when to use each
-- `docs/SCORING-RUBRIC.md` — scoring dimensions, weights, verdicts, risk scale
+- `docs/SCORING-RUBRIC.md` — dimensions and weights, route-specific Builder Fit, confidence deductions, critical gates, verdicts, risk scoring, maturity classification, known limitations
+- `docs/ROUTE-PROFILES.md` — the eight route profiles, cost assumptions, timeline assumptions
+- `docs/SAFEGUARDS.md` — human-approval rules, recruitment-scenario safeguards, source-of-truth rules
 - `docs/HOSTING-LATER.md` — hosting options to consider after review
 - `docs/ACCESSIBILITY.md` — accessibility targets and checks
