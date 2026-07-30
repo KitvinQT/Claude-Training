@@ -45,6 +45,30 @@ separately as one of: technically feasible · suitable for the current builder �
 suitable with light guidance · requires technical support · requires developer
 support · requires professional implementation.
 
+## How the intake works
+
+Nine grouped conversational steps collect 43 answers: project idea and problem ·
+users and sharing · features and scope · data and source of truth · budget and
+timeline · builder capability and support · implementation, hosting, and sharing
+preferences · restricted methods and permissions · security, maintenance, and
+ownership.
+
+- **Nothing is invented on your behalf.** Every question offers "Not sure / skip",
+  which records the answer as **Unknown** — no default is substituted. Unknowns are
+  listed on the review screen and will reduce the assessment's confidence level.
+  Leaving an important question unknown shows a notice, never a block.
+- **Some questions accept an explicit "none"**, which counts as information
+  provided rather than a gap.
+- **Navigation is backward-free, forward-gated.** Any step already reached can be
+  revisited from the progress indicator or the transcript; steps ahead stay
+  disabled until the questions before them are answered or skipped. The review
+  screen is reachable only once all nine steps are addressed.
+- **The progress indicator distinguishes** current, completed, started-but-incomplete,
+  and not-yet-available steps, and flags steps containing unknown answers — with
+  text, not colour alone.
+- **Intake completeness is not a feasibility score.** It counts answered questions
+  and says so on screen.
+
 ## Value labelling
 
 Every figure and statement carries exactly one provenance label: **From your
@@ -95,7 +119,7 @@ any external use.
 | Phase | Scope | Status |
 | --- | --- | --- |
 | 0 | Repository scaffold, README, design tokens, application shell, prototype disclaimer, test configuration | Complete |
-| 1 | Welcome screen, grouped chat-style intake (9 steps), progress indicator, Review Project Details screen | Not started |
+| 1 | Welcome screen, grouped chat-style intake (9 steps), progress indicator, Review Project Details screen | Complete |
 | 2 | Deterministic scoring engine, separate Project Feasibility and Builder Fit scores, risk engine, route comparison logic, rubric documentation and tests | Not started |
 | 3 | Executive summary, scorecards, route comparison, risk register, cost and timeline, MVP, roadmap, evidence and assumptions, final recommendation | Not started |
 | 4 | Charts, table alternatives for every chart, responsive layout, accessibility, print view | Not started |

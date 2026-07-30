@@ -9,7 +9,12 @@ describe('App shell', () => {
     render(<App />);
     const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings).toHaveLength(1);
-    expect(headings[0]).toHaveTextContent('The Feasibility Architect');
+    expect(headings[0]).toHaveTextContent('Assess a project before you build it');
+  });
+
+  it('names the prototype in the header', () => {
+    render(<App />);
+    expect(screen.getByRole('banner')).toHaveTextContent('The Feasibility Architect');
   });
 
   it('shows the prototype banner on screen', () => {

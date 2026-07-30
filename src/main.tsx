@@ -5,6 +5,7 @@ import { App } from '@/App';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 import '@/styles/components.css';
+import '@/styles/intake.css';
 
 const container = document.getElementById('root');
 
