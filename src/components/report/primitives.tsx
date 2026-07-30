@@ -160,8 +160,10 @@ export function BulletList({
     <div className="bullets">
       {heading !== undefined && <Heading className="bullets__heading">{heading}</Heading>}
       <ul className={`bullets__list bullets__list--${tone}`}>
-        {items.map((item) => (
-          <li key={item}>{item}</li>
+        {/* Index in the key: engine lists can legitimately repeat a line, such as
+         * two route fields both reading "Provided by the platform." */}
+        {items.map((item, index) => (
+          <li key={`${index}-${item}`}>{item}</li>
         ))}
       </ul>
     </div>

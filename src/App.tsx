@@ -1,7 +1,6 @@
 import { AnnouncerProvider } from '@/components/Announcer';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
-import { PrototypeBanner } from '@/components/PrototypeBanner';
 import { IntakeProvider, useIntake } from '@/state/IntakeContext';
 import { GeneratingScreen } from '@/screens/GeneratingScreen';
 import { IntakeScreen } from '@/screens/IntakeScreen';
@@ -25,7 +24,6 @@ export function App({ initialState }: { initialState?: IntakeState } = {}) {
           <a className="skip-link" href="#main">
             Skip to main content
           </a>
-          <PrototypeBanner />
           <AppHeader />
           <main className="app-main" id="main" tabIndex={-1}>
             <div className="container">

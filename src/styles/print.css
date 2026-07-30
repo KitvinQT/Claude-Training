@@ -1,0 +1,183 @@
+/*
+ * Print stylesheet for the report.
+ *
+ * Goals: keep every disclaimer, provenance label, and figure caption; expand
+ * every disclosure so nothing is hidden on paper; drop navigation and action
+ * controls, which do nothing in print.
+ */
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  :root {
+    /* Flatten tinted surfaces so text stays legible without background printing. */
+    --bg-page: #ffffff;
+    --bg-surface: #ffffff;
+    --bg-surface-alt: #ffffff;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+    font-size: 10pt;
+  }
+
+  /* --- Hide what cannot be used on paper --- */
+  .skip-link,
+  .report-nav,
+  .report-layout__nav,
+  .report-actions,
+  .review-actions,
+  .review-footer-nav,
+  .progress,
+  .step-form__actions,
+  .field__controls,
+  .tabs,
+  .button,
+  .confirm {
+    display: none !important;
+  }
+
+  /* --- Expand every disclosure, including closed ones --- */
+  .disclosure {
+    border: 1px solid #999999;
+    background: #ffffff;
+    break-inside: avoid;
+  }
+
+  .disclosure__summary {
+    list-style: none;
+    font-weight: 700;
+  }
+
+  .disclosure__summary::marker,
+  .disclosure__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details > .disclosure__body,
+  details:not([open]) > .disclosure__body {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* --- Evidence tabs become sequential sections --- */
+  .tabs__panel[hidden] {
+    display: block !important;
+  }
+
+  .tabs__panel {
+    break-inside: avoid;
+    margin-bottom: var(--sp-4);
+  }
+
+  /* --- Layout: single column, no sticky, no scroll containers --- */
+  .report-layout,
+  .report-layout__body {
+    display: block !important;
+  }
+
+  .report-layout__nav {
+    position: static !important;
+  }
+
+  .scroll-table {
+    overflow: visible !important;
+    border-color: #999999;
+  }
+
+  .report-section {
+    border: 1px solid #999999;
+    box-shadow: none;
+    padding: 8mm 0;
+    break-inside: auto;
+    break-after: auto;
+  }
+
+  .report-section__title {
+    break-after: avoid;
+    border-bottom: 2px solid #000000;
+  }
+
+  /* --- Keep records and figures together where possible --- */
+  .chart,
+  .risk,
+  .dimension,
+  .paths__card,
+  .roadmap__phase,
+  .facts__item,
+  .actions__item,
+  .callout {
+    break-inside: avoid;
+  }
+
+  table {
+    break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  th,
+  td {
+    break-inside: avoid;
+  }
+
+  /* --- Keep the labels that make the report honest --- */
+  .data-label,
+  .status,
+  .proto-banner,
+  .memory-notice,
+  .callout,
+  .chart__caption,
+  .data-table__caption,
+  .barchart__footnote {
+    display: revert;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .data-label,
+  .status {
+    border: 1px solid #666666;
+    color: #000000;
+    background: #ffffff;
+  }
+
+  /* Bars still read as bars in greyscale. */
+  .barchart__bar,
+  .score__fill,
+  .severity__cell--filled {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .severity__cell--filled {
+    color: #ffffff;
+  }
+
+  a[href^='#'] {
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .app-header,
+  .app-footer {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-bottom: 1px solid #000000;
+  }
+
+  .app-header__title,
+  .app-header__tagline,
+  .app-footer__heading,
+  .app-footer__list,
+  .app-footer__note {
+    color: #000000 !important;
+  }
+}

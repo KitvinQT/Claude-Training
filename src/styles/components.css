@@ -8,6 +8,11 @@
   color: var(--text-strong);
 }
 
+/* The banner sits inside the header landmark; keep its own light surface. */
+.app-header .proto-banner {
+  margin: 0;
+}
+
 .proto-banner__inner {
   display: flex;
   flex-wrap: wrap;

@@ -1,3 +1,4 @@
+import { PrototypeBanner } from '@/components/PrototypeBanner';
 import { PROTOTYPE_NAME, PROTOTYPE_TAGLINE } from '@/content/disclaimers';
 
 /**
@@ -7,6 +8,8 @@ import { PROTOTYPE_NAME, PROTOTYPE_TAGLINE } from '@/content/disclaimers';
 export function AppHeader() {
   return (
     <header className="app-header">
+      {/* Inside the header landmark, so no page content sits outside a landmark. */}
+      <PrototypeBanner />
       <div className="container app-header__inner">
         <div className="app-header__brand">
           <span aria-hidden="true" className="app-header__mark">

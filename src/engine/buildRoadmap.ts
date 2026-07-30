@@ -59,6 +59,7 @@ export function buildRoadmap(
     const shared = {
       id: seed.id,
       label: seed.label,
+      band: band?.band ?? null,
       maturityReached: seed.maturity,
       estimatedTime: band?.bandLabel ?? 'Not estimated',
       achievableWithRecommendedRoute: achievable,

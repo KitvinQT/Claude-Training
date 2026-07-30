@@ -8,6 +8,7 @@ import {
   ScrollTable,
   StatusPill,
 } from '@/components/report/primitives';
+import { RiskSeverityChart } from '@/components/report/charts';
 import type { Assessment, Risk, RiskScore } from '@/engine/types';
 import { COST_CATEGORY_LABELS } from '@/engine/types';
 
@@ -103,6 +104,8 @@ export function RiskRegisterSection({ assessment }: { assessment: Assessment }) 
       }
       title="Risk register"
     >
+      <RiskSeverityChart risks={risks} />
+
       <h3 className="risk__section-title">
         Highest-priority risks ({highRisks.length} scored 4 or 5)
       </h3>

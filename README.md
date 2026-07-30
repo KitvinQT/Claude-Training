@@ -142,6 +142,27 @@ AI-assisted coding are *methods*; a custom hosted web application is a
 target, and builder requirement as four distinct fields, with a note wherever the
 two concepts are commonly conflated.
 
+## Figures
+
+Four figures, all driven by values the engine already calculated:
+
+1. **Project feasibility by dimension** — the ten dimension scores
+2. **Route fit compared with Builder Fit** — paired bars for all eight routes, excluded ones marked but not hidden
+3. **Risk severity by category** — a labelled 1 to 5 scale per category (a single severity value, not a likelihood-versus-impact grid, because the rubric does not calculate those two axes)
+4. **Phased roadmap** — each phase placed on the agreed duration scale
+
+Each is a `role="img"` with a text description, a caption, a provenance label, and
+a **"View as table"** disclosure holding the same numbers. Built from CSS bars, so
+no charting library is needed. Bar transitions are removed under
+`prefers-reduced-motion`.
+
+## Printing
+
+Ctrl-P uses the print stylesheet: navigation and action controls drop away, every
+disclosure and evidence panel expands so nothing is hidden on paper, and the
+prototype disclaimers and provenance labels stay visible. There is no in-app
+export, download, or share control.
+
 ## Value labelling
 
 Every figure and statement carries exactly one provenance label: **From your
@@ -168,8 +189,9 @@ directly from the file system.
 ## Technology
 
 Vite · React 18 · TypeScript (strict) · hand-written CSS with design tokens ·
-Vitest + React Testing Library · Recharts and Playwright are added in later
-phases. No UI framework, no CSS framework, no runtime dependencies beyond React.
+Vitest + React Testing Library · axe-core for automated accessibility checks. No
+UI framework, no CSS framework, no charting library, and no runtime dependencies
+beyond React.
 
 ## Colour palette
 
@@ -195,8 +217,9 @@ any external use.
 | 1 | Welcome screen, grouped chat-style intake (9 steps), progress indicator, Review Project Details screen | Complete |
 | 2 | Deterministic scoring engine, separate Project Feasibility and Builder Fit scores, risk engine, route comparison logic, rubric documentation and tests | Complete |
 | 3 | Report interface: executive summary, scorecards, technical route vs practical path, route comparison, risk register, cost and timeline, maturity, source of truth, safeguards, MVP, roadmap, evidence, final recommendation | Complete |
-| 4 | Charts, table alternatives for every chart, responsive layout, accessibility, print view | Not started |
-| 5 | Fictional demo scenarios, end-to-end testing, static production build, demo script, screenshots, review summary | Not started |
+| 4 | Four figures with table alternatives, responsive polish, print stylesheet, automated accessibility checks, demo script | Complete |
+
+The prototype is complete. Nothing further is planned or in progress.
 
 ## Possible future features (not in this version)
 
@@ -213,4 +236,6 @@ deployed at this stage.
 - `docs/ROUTE-PROFILES.md` — the eight route profiles, cost assumptions, timeline assumptions
 - `docs/SAFEGUARDS.md` — human-approval rules, recruitment-scenario safeguards, source-of-truth rules
 - `docs/HOSTING-LATER.md` — hosting options to consider after review
-- `docs/ACCESSIBILITY.md` — accessibility targets and checks
+- `docs/ACCESSIBILITY.md` — accessibility targets and verification results
+- `docs/DEMO-SCRIPT.md` — how to present the prototype to a team
+- `docs/LIMITATIONS.md` — limitations and hosting options for later

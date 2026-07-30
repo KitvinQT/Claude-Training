@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { DataLabel } from '@/components/DataLabel';
+import { RoadmapChart } from '@/components/report/charts';
 import {
   BulletList,
   Callout,
@@ -104,6 +105,8 @@ export function RoadmapSection({ assessment }: { assessment: Assessment }) {
       }
       title="Phased roadmap"
     >
+      <RoadmapChart phases={roadmap} />
+
       <div className="roadmap">
         {roadmap.map((phase) => (
           <article className="roadmap__phase" key={phase.id}>

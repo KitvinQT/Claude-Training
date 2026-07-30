@@ -780,6 +780,8 @@ export type RoadmapPhaseId = 'phase-0' | 'phase-1' | 'phase-2' | 'phase-3' | 'ph
 export interface RoadmapPhase {
   readonly id: RoadmapPhaseId;
   readonly label: string;
+  /** Duration band behind `estimatedTime`, so a figure can place it on the scale. */
+  readonly band: DurationBand | null;
   readonly goal: string;
   readonly mainWork: readonly string[];
   readonly requiredOwner: string;

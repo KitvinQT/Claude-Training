@@ -9,6 +9,7 @@ import {
   StatusPill,
   type FactItem,
 } from '@/components/report/primitives';
+import { FitComparisonChart } from '@/components/report/charts';
 import { ROUTE_DELIVERY } from '@/data/routeDelivery';
 import type { Assessment, RouteAssessment } from '@/engine/types';
 import {
@@ -185,6 +186,8 @@ export function RouteComparisonSection({ assessment }: { assessment: Assessment 
       }
       title="Implementation route comparison"
     >
+      <FitComparisonChart routes={routes} />
+
       <ScrollTable
         caption="Every implementation route with its eligibility, technical status, fit, cost, and blockers"
         label="Implementation route comparison table"

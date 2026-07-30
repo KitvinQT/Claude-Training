@@ -181,8 +181,11 @@ describe('project feasibility scorecards', () => {
         label,
       ).toBeInTheDocument();
     }
-    expect(within(section).getAllByText('Weight')).toHaveLength(10);
-    expect(within(section).getAllByText('Weighted contribution')).toHaveLength(10);
+    // Scoped to the cards: the dimension figure's table also has these headers.
+    expect(within(section).getAllByText('Weight', { selector: 'dt' })).toHaveLength(10);
+    expect(
+      within(section).getAllByText('Weighted contribution', { selector: 'dt' }),
+    ).toHaveLength(10);
     expect(within(section).getAllByText(/Recommended corrective action:/)).toHaveLength(10);
   });
 

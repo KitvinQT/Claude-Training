@@ -1,4 +1,5 @@
 import { DataLabel } from '@/components/DataLabel';
+import { DimensionChart } from '@/components/report/charts';
 import {
   BulletList,
   Disclosure,
@@ -113,6 +114,10 @@ export function FeasibilitySection({ assessment }: { assessment: Assessment }) {
         provenance={projectFeasibility.provenance}
         score={projectFeasibility.score}
         size="large"
+      />
+      <DimensionChart
+        dimensions={projectFeasibility.dimensions}
+        overall={projectFeasibility.score}
       />
       <div className="dimension-grid">
         {projectFeasibility.dimensions.map((dimension) => (
